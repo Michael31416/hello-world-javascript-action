@@ -1,14 +1,29 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: Diffblue Cover
+description: Runs Diffblue Cover to automatically write and maintain Java unit tests.
+author: Diffblue
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  license-key:
     required: true
-    default: 'World'
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+    description: The license key provided in your welcome email or provided by your organization.
+  access-token:
+    required: true
+    description: The access token used to push commits and call GitHub APIs.
+  args:
+    required: false
+    description: The Diffblue Cover command line arguments. 
+    default: >-
+      ci
+      activate
+      validate
+      create
+  working-directory:
+    required: false
+    description: The working directory to pass to `dcover` comamnds that accept a `--working-directory` argument.
+    default: .
 runs:
   using: 'node20'
   main: 'dist/index.js'
-
+  env:
+    DIFFBLUE_LICENSE_KEY: ${{ inputs.license-key }}
+    DIFFBLUE_WORKING_DIRECTORY: ${{ inputs.working-directory }} 
+    DIFFBLUE_ACCESS_TOKEN: ${{ inputs.access-token }}
